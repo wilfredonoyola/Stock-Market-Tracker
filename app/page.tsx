@@ -34,9 +34,7 @@ export default function Home() {
         <StockCard changePercent={2} value={23.2} stockName="EUR/USD" />
       </TopBar>
 
-      {/* Sección principal dividida en dos columnas */}
       <div className="flex justify-center w-full">
-        {/* Columna izquierda para FormAlert */}
         <div className="w-full lg:w-1/5 p-4">
           <FormAlert
             onSubmit={(value1: any) => {
@@ -45,10 +43,8 @@ export default function Home() {
             stockNames={["USD", "EUR/USD"]}
           />
         </div>
-
-        {/* Columna derecha para la gráfica (mostrar o esconder según el tamaño de la pantalla) */}
         <div className="hidden lg:block w-full lg:w-4/5 p-4">
-        <PlottingGraph stocks={stockData} />
+          <PlottingGraph stocks={stockData} />
         </div>
       </div>
     </main>

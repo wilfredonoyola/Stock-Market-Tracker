@@ -9,23 +9,22 @@ interface FormAlertProps {
 }
 
 const FormAlert: React.FC<FormAlertProps> = ({ stockNames, onSubmit }) => {
-  // Verificar si estamos en el cliente antes de usar useState
-  const [selectedStock, setSelectedStock] =  useState<string>('') ;
-  const [alertPrice, setAlertPrice] =  useState<number>(0) ;
+  const [selectedStock, setSelectedStock] = useState<string>("");
+  const [alertPrice, setAlertPrice] = useState<number>(0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({ stockName: selectedStock, alertPrice });
-    // // Reset form fields after submission if needed
-    // setSelectedStock('');
-    // setAlertPrice(0);
   };
 
   return (
     <div className="rounded-md overflow-hidden shadow-lg bg-slate-900 p-3">
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="stockName" className="block text-white text-sm font-bold mb-2">
+          <label
+            htmlFor="stockName"
+            className="block text-white text-sm font-bold mb-2"
+          >
             Select Stock Name:
           </label>
           <select
@@ -44,7 +43,10 @@ const FormAlert: React.FC<FormAlertProps> = ({ stockNames, onSubmit }) => {
           </select>
         </div>
         <div className="mb-4">
-          <label htmlFor="alertPrice" className="block text-white text-sm font-bold mb-2">
+          <label
+            htmlFor="alertPrice"
+            className="block text-white text-sm font-bold mb-2"
+          >
             Alert Price:
           </label>
           <input
