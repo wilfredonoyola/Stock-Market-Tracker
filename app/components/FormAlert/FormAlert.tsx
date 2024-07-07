@@ -3,14 +3,13 @@
 import { FormDataAlert } from '@/app/share/types';
 import React, { useState, useEffect } from 'react';
 
-
 interface FormAlertProps {
   stockNames: string[];
   onSubmit: (formData: FormDataAlert) => void;
 }
 
 const FormAlert: React.FC<FormAlertProps> = ({ stockNames, onSubmit }) => {
-  const [selectedStock, setSelectedStock] = useState<string>('');
+  const [selectedStock, setSelectedStock] = useState<string>(stockNames.length > 0 ? stockNames[0] : '');
   const [alertPrice, setAlertPrice] = useState<number>(0);
 
   useEffect(() => {
@@ -18,6 +17,12 @@ const FormAlert: React.FC<FormAlertProps> = ({ stockNames, onSubmit }) => {
       onSubmit({ stockName: selectedStock, alertPrice });
     }
   }, [selectedStock, alertPrice, onSubmit]);
+
+  useEffect(() => {
+    if (stockNames.length > 0 && !selectedStock) {
+      setSelectedStock(stockNames[0]);
+    }
+  }, [stockNames]);
 
   return (
     <div className="rounded-md overflow-hidden shadow-lg bg-slate-900 p-3">
@@ -51,6 +56,7 @@ const FormAlert: React.FC<FormAlertProps> = ({ stockNames, onSubmit }) => {
           Alert Price:
         </label>
         <input
+          min={0}
           type="number"
           id="alertPrice"
           className="block appearance-none w-full bg-slate-800 border border-gray-300 text-white py-2 px-3 rounded leading-tight focus:outline-none focus:bg-slate-900 focus:border-gray-500"
