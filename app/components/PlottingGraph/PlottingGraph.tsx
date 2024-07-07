@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
 import React from 'react';
+import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   LineElement,
@@ -11,8 +12,7 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
-import { Line } from 'react-chartjs-2';
+} from 'chart.js';
 
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Title, Tooltip, Legend);
 
@@ -21,38 +21,24 @@ interface StockData {
   price: number;
 }
 
-interface StockChartProps {
-  stocks?: StockData[];
+interface PlottingGraphProps {
+  stocks: StockData[];
 }
 
-const StockChart: React.FC<StockChartProps> = ({ stocks = [] }) => {
-  const data = React.useMemo(() => {
-    const labels: string[] = [];
-    const totalValues: number[] = [];
-    let totalPortfolioValue = 0;
+const PlottingGraph: React.FC<PlottingGraphProps> = ({ stocks }) => {
+  const data = {
+    labels: stocks.map(stock => stock.name),
+    datasets: [
+      {
+        label: 'Stock Prices',
+        data: stocks.map(stock => stock.price),
+        borderColor: 'rgba(75,192,192,1)',
+        backgroundColor: 'rgba(75,192,192,0.4)',
+      },
+    ],
+  };
 
-    if (stocks && Array.isArray(stocks)) {
-      stocks.forEach((stock) => {
-        totalPortfolioValue += stock.price;
-        totalValues.push(totalPortfolioValue);
-        labels.push(stock.name);
-      });
-    }
-
-    return {
-      labels,
-      datasets: [
-        {
-          label: 'Total Portfolio Value in USD',
-          data: totalValues,
-          borderColor: 'blue',
-          backgroundColor: 'rgba(75,192,192,0.4)',
-        },
-      ],
-    };
-  }, [stocks]);
-
-  const chartOptions: ChartOptions<'line'> = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
@@ -60,7 +46,7 @@ const StockChart: React.FC<StockChartProps> = ({ stocks = [] }) => {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Value in USD',
+          text: 'Price in USD',
         },
       },
       x: {
@@ -73,7 +59,7 @@ const StockChart: React.FC<StockChartProps> = ({ stocks = [] }) => {
     plugins: {
       title: {
         display: true,
-        text: 'Total Portfolio Value Over Time',
+        text: 'Stock Prices Over Time',
       },
       tooltip: {
         mode: 'index',
@@ -86,12 +72,7 @@ const StockChart: React.FC<StockChartProps> = ({ stocks = [] }) => {
     },
   };
 
-  return (
-    <div className="stock-chart" style={{ maxHeight: '500px', overflowY: 'auto' }}>
-      <h2>Total Portfolio Value Chart</h2>
-      <Line data={data} options={chartOptions} />
-    </div>
-  );
+  return <Line data={data} options={options} />;
 };
 
-export default StockChart;
+export default PlottingGraph;

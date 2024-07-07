@@ -1,5 +1,4 @@
-"use client"
-
+'use client';
 
 import React, { useState } from 'react';
 
@@ -9,7 +8,7 @@ interface FormAlertProps {
 }
 
 const FormAlert: React.FC<FormAlertProps> = ({ stockNames, onSubmit }) => {
-  const [selectedStock, setSelectedStock] = useState<string>("");
+  const [selectedStock, setSelectedStock] = useState<string>('');
   const [alertPrice, setAlertPrice] = useState<number>(0);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -21,10 +20,7 @@ const FormAlert: React.FC<FormAlertProps> = ({ stockNames, onSubmit }) => {
     <div className="rounded-md overflow-hidden shadow-lg bg-slate-900 p-3">
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label
-            htmlFor="stockName"
-            className="block text-white text-sm font-bold mb-2"
-          >
+          <label htmlFor="stockName" className="block text-white text-sm font-bold mb-2">
             Select Stock Name:
           </label>
           <select
@@ -34,7 +30,7 @@ const FormAlert: React.FC<FormAlertProps> = ({ stockNames, onSubmit }) => {
             onChange={(e) => setSelectedStock(e.target.value)}
             required
           >
-            <option value="all">All</option>
+            <option value="">Select a stock</option>
             {stockNames.map((name) => (
               <option key={name} value={name}>
                 {name}
@@ -43,10 +39,7 @@ const FormAlert: React.FC<FormAlertProps> = ({ stockNames, onSubmit }) => {
           </select>
         </div>
         <div className="mb-4">
-          <label
-            htmlFor="alertPrice"
-            className="block text-white text-sm font-bold mb-2"
-          >
+          <label htmlFor="alertPrice" className="block text-white text-sm font-bold mb-2">
             Alert Price:
           </label>
           <input
@@ -58,12 +51,6 @@ const FormAlert: React.FC<FormAlertProps> = ({ stockNames, onSubmit }) => {
             required
           />
         </div>
-        <button
-          type="submit"
-          className="bg-indigo-950 hover:bg-indigo-950 text-white font-bold py-2 px-4 w-full rounded focus:outline-none focus:shadow-outline"
-        >
-          Create Alert
-        </button>
       </form>
     </div>
   );
