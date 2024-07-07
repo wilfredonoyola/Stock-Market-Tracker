@@ -3,16 +3,16 @@
 import StockCard from "./components/StockCard";
 import TopBar from "./components/TopBar";
 import FormAlert from "./components/FormAlert";
-import PlottingGraph from "./components/PlottingGraph";
+// import PlottingGraph from "./components/PlottingGraph";
 import { useEffect, useState } from "react";
 import { fetchStocksData } from "./utils/finnhub-client";
 import io from 'socket.io-client';
+import { StockData, FormDataAlert, StockQuote } from '@/app/share/types';
 
-const WEB_SOCKET_URL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL;
-const API_KEY = process.env.NEXT_PUBLIC_FINNUB_API_KEY;
+const WEB_SOCKET_URL = `${process.env.NEXT_PUBLIC_WEB_SOCKET_URL}?token=${process.env.NEXT_PUBLIC_FINNUB_API_KEY}`;
 
 export default function Home() {
-  const [stocks, setStocks] = useState<any[]>([]);
+  const [stocks, setStocks] = useState<StockQuote[]>([]);
   const [selectedStock, setSelectedStock] = useState<string>('');
   const [priceAlert, setPriceAlert] = useState<number>(0);
   const [socket, setSocket] = useState<any>(null);
@@ -28,37 +28,39 @@ export default function Home() {
     });
   }, []);
 
-  useEffect(() => {
-    if (selectedStock && WEB_SOCKET_URL && API_KEY) {
-      console.log(`Subscribing to ${selectedStock}`);
-      const newSocket = io(`${WEB_SOCKET_URL}?token=${API_KEY}`,{});
-      setSocket(newSocket);
+  // useEffect(() => {
+  //   if (selectedStock && WEB_SOCKET_URL) {
+  //     console.log(`Subscribing to ${selectedStock}`);
+  //     const newSocket = io(WEB_SOCKET_URL, {
+  //       transports: ["websocket"], // Use WebSocket only
+  //     });
+  //     setSocket(newSocket);
 
-      newSocket.emit('subscribe', selectedStock);
+  //     newSocket.emit('subscribe', { symbol: selectedStock });
 
-      newSocket.on('stock data', (data: any) => {
-        console.log('Received stock data: ', data);
-        setStocks((prevStocks) => {
-          const newStocks = [...prevStocks];
-          const stockIndex = newStocks.findIndex(stock => stock.symbol === data.symbol);
-          if (stockIndex > -1) {
-            newStocks[stockIndex] = { ...newStocks[stockIndex], ...data };
-          } else {
-            newStocks.push(data);
-          }
-          return newStocks.slice(0, 100); // Asegurar que no pasamos de 100 elementos
-        });
-      });
+  //     newSocket.on('trade', (data: StockData) => {
+  //       console.log('Received stock data: ', data);
+  //       setStocks((prevStocks) => {
+  //         const newStocks = [...prevStocks];
+  //         const stockIndex = newStocks.findIndex(stock => stock.symbol === data.s);
+  //         if (stockIndex > -1) {
+  //           newStocks[stockIndex] = { symbol: data.s, currentPrice: data.c, percentChange: data.dp };
+  //         } else {
+  //           newStocks.push({ symbol: data.s, currentPrice: data.c, percentChange: data.dp });
+  //         }
+  //         return newStocks.slice(0, 5); 
+  //       });
+  //     });
 
-      return () => {
-        console.log(`Unsubscribing from ${selectedStock}`);
-        newSocket.emit('unsubscribe', selectedStock);
-        newSocket.disconnect();
-      };
-    }
-  }, [selectedStock]);
+  //     return () => {
+  //       console.log(`Unsubscribing from ${selectedStock}`);
+  //       newSocket.emit('unsubscribe', { symbol: selectedStock });
+  //       newSocket.disconnect();
+  //     };
+  //   }
+  // }, [selectedStock]);
 
-  const handleFormSubmit = (formData: { stockName: string; alertPrice: number }) => {
+  const handleFormSubmit = (formData: FormDataAlert) => {
     setSelectedStock(formData.stockName);
     setPriceAlert(formData.alertPrice);
   };
@@ -69,9 +71,9 @@ export default function Home() {
         {stocks.map(stock => (
           <StockCard
             key={stock.symbol}
-            changePercent={stock.dp !== undefined ? stock.dp : 0}  // Proveer un valor por defecto
-            value={stock.c !== undefined ? stock.c : 0}  // Proveer un valor por defecto
-            stockName={stock.symbol}
+            percentChange={stock.percentChange}
+            currentPrice={stock.currentPrice}  // Proveer un valor por defecto
+            symbol={stock.symbol}
             alertPrice={priceAlert}
           />
         ))}
@@ -84,9 +86,9 @@ export default function Home() {
             stockNames={stocks.map(stock => stock.symbol)}
           />
         </div>
-        <div className="hidden lg:block w-full lg:w-4/5 p-4">
+        {/* <div className="hidden lg:block w-full lg:w-4/5 p-4">
           <PlottingGraph stocks={stocks} />
-        </div>
+        </div> */}
       </div>
     </main>
   );

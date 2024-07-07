@@ -1,20 +1,34 @@
 import axios from 'axios';
+import { StockQuote,SymbolResponse , QuoteResponse} from '../share/types';
 
 const API_KEY = process.env.NEXT_PUBLIC_FINNUB_API_KEY as string; 
 const FINNUB_API_URL = process.env.NEXT_PUBLIC_FINNUB_API_URL as string;
-const MAX_DATA = 5
+const MAX_DATA = 8;
 
-export const fetchStocksData = async () => {
+
+export const fetchStocksData = async (): Promise<StockQuote[]> => {
   try {
-    const response = await axios.get(`${FINNUB_API_URL}/stock/symbol?exchange=US&token=${API_KEY}`);
+    const response = await axios.get<SymbolResponse[]>(`${FINNUB_API_URL}/stock/symbol?exchange=US&token=${API_KEY}`);
     const symbols = response.data.slice(0, MAX_DATA); 
 
+    // Manually add additional stocks
+    const additionalSymbols = [
+      { symbol: "AAPL" },
+      { symbol: "AMZN" },
+      { symbol: "MSFT" },
+      { symbol: "TSLA" },
+    ];
+    const allSymbols = [ ...additionalSymbols, ...symbols];
+
     // Fetch detailed data for each stock
-    const detailedDataPromises = symbols.map(async (stock: { symbol: string }) => {
-      const stockDetailResponse = await axios.get(`${FINNUB_API_URL}/quote?symbol=${stock.symbol}&token=${API_KEY}`);
+    const detailedDataPromises = allSymbols.map(async (stock) => {
+      const stockDetailResponse = await axios.get<QuoteResponse>(`${FINNUB_API_URL}/quote?symbol=${stock.symbol}&token=${API_KEY}`);
+      console.log('Symbol:', stock.symbol);
+      console.log('Stock details:', stockDetailResponse.data);
       return {
         symbol: stock.symbol,
-        ...stockDetailResponse.data,
+        currentPrice: stockDetailResponse.data.c ?? 0,
+        percentChange: stockDetailResponse.data.dp ?? 0.0,
       };
     });
 
