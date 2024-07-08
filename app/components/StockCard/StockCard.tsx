@@ -1,6 +1,7 @@
 'use client';
 
-import { StockQuote } from '@/app/share/types';
+
+import { StockQuote } from 'app/share/types';
 import React from 'react';
 
 
