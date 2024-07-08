@@ -1,6 +1,6 @@
 'use client';
 
-import { FormDataAlert } from '@/app/share/types';
+import { FormDataAlert } from 'app/share/types';
 import React, { useState, useEffect } from 'react';
 
 interface FormAlertProps {

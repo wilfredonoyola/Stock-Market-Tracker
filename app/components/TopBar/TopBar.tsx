@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from './styles.module.css';
-import useWebSocket from '@/app/hooks/useWebSocket';
+
 import StockCard from '../StockCard';
-import { StockQuote, WebSocketMessage } from '@/app/share/types';
+import useWebSocket from 'app/hooks/useWebSocket';
+import { StockQuote, WebSocketMessage } from 'app/share/types';
+
 
 export interface TopBarProps {
   stocks: StockQuote[];
