@@ -38,14 +38,14 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen items-center justify-start">
       <TopBar alertPrice={priceAlert} stocks={stocks} />
-      <div className="flex justify-center w-full h-[500px]">
+      <div className="flex flex-col lg:flex-row justify-start w-full md:h-[500px] h-[800px]">
         <div className="w-full lg:w-1/5 p-4">
           <FormAlert
             onSubmit={handleFormSubmit}
             stockNames={stocks.map((stock) => stock.symbol)}
           />
         </div>
-        <div className="hidden lg:block w-full lg:w-4/5 mt-4 mr-3">
+        <div className="sm:w-full md:w-full lg:w-4/5 mt-2 md:mt-4 px-2 sm:px-2 lg:mr-3 h-[300px] md:h-full">
           <TradingViewWidget symbol={selectedStocks} />
         </div>
       </div>
