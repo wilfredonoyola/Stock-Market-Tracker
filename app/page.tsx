@@ -5,7 +5,7 @@ import TopBar from "./components/TopBar";
 import FormAlert from "./components/FormAlert";
 import { useEffect, useState } from "react";
 import { fetchStocksData } from "./utils/finnhub-client";
-import { FormDataAlert, StockQuote } from '@/app/share/types';
+import { FormDataAlert, StockQuote } from 'app/share/types';
 import TradingViewWidget from "./components/TradingViewWidget";
 import SkeletonLoader from "./components/SkeletonLoader";
 
