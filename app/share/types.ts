@@ -25,7 +25,7 @@ export interface StockQuote {
 }
   
 export interface FormDataAlert {
-    stockName: string;
+    symbol: string;
     alertPrice: number;
 }
 

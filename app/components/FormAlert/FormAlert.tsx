@@ -10,11 +10,18 @@ interface FormAlertProps {
 
 const FormAlert: React.FC<FormAlertProps> = ({ stockNames, onSubmit }) => {
   const [selectedStock, setSelectedStock] = useState<string>(stockNames.length > 0 ? stockNames[0] : '');
-  const [alertPrice, setAlertPrice] = useState<number>(0);
+  const [alertPrice, setAlertPrice] = useState<number>(10);
+
+  useEffect(() => {
+    if(stockNames.length > 0){
+      onSubmit({alertPrice: alertPrice, symbol:  stockNames[0]})
+    }
+   
+  }, []);
 
   useEffect(() => {
     if (selectedStock && alertPrice > 0) {
-      onSubmit({ stockName: selectedStock, alertPrice });
+      onSubmit({ symbol: selectedStock, alertPrice });
     }
   }, [selectedStock, alertPrice, onSubmit]);
 
@@ -25,7 +32,7 @@ const FormAlert: React.FC<FormAlertProps> = ({ stockNames, onSubmit }) => {
   }, [stockNames]);
 
   return (
-    <div className="rounded-md overflow-hidden shadow-lg bg-slate-900 p-3">
+    <div className="rounded-sm overflow-hidden shadow-lg bg-slate-900 p-3">
       <div className="mb-4">
         <label
           htmlFor="stockName"
