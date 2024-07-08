@@ -27,8 +27,8 @@ const TradingViewWidget: React.FC<TradingViewWidgetProps> = ({ symbol }) => {
         "locale": "en",
         "hide_top_toolbar": true,
         "allow_symbol_change": true,
-        "details": true,
-        "hotlist": true,
+        "details": false,
+        "hotlist": false,
         "calendar": false,
         "support_host": "https://www.tradingview.com"
       }`;
