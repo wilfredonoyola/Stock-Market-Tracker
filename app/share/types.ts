@@ -29,4 +29,21 @@ export interface FormDataAlert {
     alertPrice: number;
 }
 
+export interface TradeData {
+    s: string; // Symbol
+    p: number; // Price
+    t: number; // Timestamp
+    v: number; // Volume
+    c: string[]; // Conditions
+}
+
+export interface WebSocketMessage {
+    s: string; // symbol
+    p: number; // current price
+  }
+
+
+
+  
+
   

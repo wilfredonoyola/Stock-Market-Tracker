@@ -38,7 +38,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col min-h-screen items-center justify-start">
-      <TopBar>
+      {/* <TopBar>
         {stocks.map((stock) => (
           <StockCard
             key={stock.symbol}
@@ -48,7 +48,8 @@ export default function Home() {
             alertPrice={priceAlert}
           />
         ))}
-      </TopBar>
+      </TopBar> */}
+       <TopBar  alertPrice={priceAlert} stocks={stocks}/>
 
       <div className="flex justify-center w-full h-[500px]">
         <div className="w-full lg:w-1/5 p-4">
