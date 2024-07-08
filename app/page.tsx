@@ -1,50 +1,64 @@
-'use client'; 
+'use client';
 
 import StockCard from "./components/StockCard";
 import TopBar from "./components/TopBar";
 import FormAlert from "./components/FormAlert";
-import PlottingGraph from "./components/PlottingGraph";
+import { useEffect, useState } from "react";
+import { fetchStocksData } from "./utils/finnhub-client";
+import { FormDataAlert, StockQuote } from '@/app/share/types';
+import TradingViewWidget from "./components/TradingViewWidget";
+import SkeletonLoader from "./components/SkeletonLoader";
 
 export default function Home() {
-  const stockData = [
-    {
-      name: 'Apple (AAPL)',
-      price: 178.56,
-    },
-    {
-      name: 'Google (GOOG)',
-      price: 123.45,
-    },
-    {
-      name: 'Microsoft (MSFT)',
-      price: 278.12,
-    },
-  ];
+  const [stocks, setStocks] = useState<StockQuote[]>([]);
+  const [selectedStocks, setSelectedStocks] = useState<string>('');
+  const [priceAlert, setPriceAlert] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true)
+
+  useEffect(() => {
+    const fetchStocks = async () => {
+      const data = await fetchStocksData();
+      setStocks(data);
+      
+    };
+
+    fetchStocks().then((stocks: any) => {
+      setLoading(false);
+    });
+  }, []);
+
+  const handleFormSubmit = (formData: FormDataAlert) => {
+    setSelectedStocks(formData.symbol)
+    setPriceAlert(formData.alertPrice);
+  };
+
+  if(loading){
+    return <SkeletonLoader></SkeletonLoader>;
+  }
+
   return (
     <main className="flex flex-col min-h-screen items-center justify-start">
       <TopBar>
-        <StockCard changePercent={2} value={23.2} stockName="BTC/USD" />
-        <StockCard changePercent={2} value={23.2} stockName="BTC/USD" />
-        <StockCard changePercent={2} value={23.2} stockName="ETH/USD" />
-        <StockCard changePercent={2} value={23.2} stockName="EUR/USD" />
-        <StockCard changePercent={2} value={23.2} stockName="ETH/USD" />
-        <StockCard changePercent={2} value={23.2} stockName="BTC/USD" />
-        <StockCard changePercent={2} value={23.2} stockName="ETH/USD" />
-        <StockCard changePercent={2} value={23.2} stockName="EUR/USD" />
-        <StockCard changePercent={2} value={23.2} stockName="EUR/USD" />
+        {stocks.map((stock) => (
+          <StockCard
+            key={stock.symbol}
+            percentChange={stock.percentChange}
+            currentPrice={stock.currentPrice || 0}
+            symbol={stock.symbol}
+            alertPrice={priceAlert}
+          />
+        ))}
       </TopBar>
 
-      <div className="flex justify-center w-full">
+      <div className="flex justify-center w-full h-[500px]">
         <div className="w-full lg:w-1/5 p-4">
           <FormAlert
-            onSubmit={(value1: any) => {
-              console.log("click here, value 1:", value1);
-            }}
-            stockNames={["USD", "EUR/USD"]}
+            onSubmit={handleFormSubmit}
+            stockNames={stocks.map((stock) => stock.symbol)}
           />
         </div>
-        <div className="hidden lg:block w-full lg:w-4/5 p-4">
-          <PlottingGraph stocks={stockData} />
+        <div className="hidden lg:block w-full lg:w-4/5 mt-4 mr-3">
+        <TradingViewWidget symbol={selectedStocks} />
         </div>
       </div>
     </main>

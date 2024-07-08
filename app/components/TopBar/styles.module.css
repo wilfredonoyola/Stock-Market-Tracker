@@ -1,10 +1,10 @@
 .scroll-container {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* Enhances scroll on iOS */
-    scrollbar-width: none; /* Hides scrollbar on Firefox */
-    -ms-overflow-style: none; /* Hides scrollbar on IE/Edge */
-  }
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Enhances scroll on iOS */
+  scrollbar-width: none; /* Hides scrollbar on Firefox */
+  -ms-overflow-style: none; /* Hides scrollbar on IE/Edge */
+}
   
-  .scroll-container::-webkit-scrollbar {
-    display: none; /* Hides scrollbar on Webkit (Chrome/Safari) */
-  }
+.scroll-container::-webkit-scrollbar {
+  display: none; /* Hides scrollbar on Webkit (Chrome/Safari) */
+}
