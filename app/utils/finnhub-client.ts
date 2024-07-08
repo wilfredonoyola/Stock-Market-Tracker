@@ -25,6 +25,7 @@ export const fetchStocksData = async (): Promise<StockQuote[]> => {
     const additionalSymbols = [
       { symbol: "AAPL" },
       { symbol: "AMZN" },
+      { symbol: "NVDA" },
       { symbol: "MSFT" },
       { symbol: "TSLA" },
     ];
