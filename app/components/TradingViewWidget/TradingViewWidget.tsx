@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 
-interface PlottingGraphProps {
+interface TradingViewWidgetProps {
   symbol: string;
 }
 
-const TradingViewWidget: React.FC<PlottingGraphProps> = ({ symbol }) => {
-  console.log('SYMBOL CHANGE: ', symbol);
+const TradingViewWidget: React.FC<TradingViewWidgetProps> = ({ symbol }) => {
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
